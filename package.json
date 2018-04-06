@@ -1,0 +1,20 @@
+{
+  "name": "parking-suggest",
+  "version": "1.0.0",
+  "description": "Parking Suggest Cloud App",
+  "main": "app.js",
+  "engines": {
+    "node": "8.11.1",
+    "npm": "5.0.3"
+  },
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "Priyansh Rastogi",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.3",
+    "passport": "^0.4.0",
+    "socket.io": "^2.1.0"
+  }
+}
