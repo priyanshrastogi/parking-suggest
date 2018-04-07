@@ -8,13 +8,18 @@
     "npm": "5.0.3"
   },
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
   "author": "Priyansh Rastogi",
   "license": "MIT",
   "dependencies": {
+    "bluebird": "^3.5.1",
     "express": "^4.16.3",
+    "mongoose": "^5.0.13",
+    "nodemon": "^1.17.3",
     "passport": "^0.4.0",
+    "passport-google-oauth20": "^1.0.0",
     "socket.io": "^2.1.0"
   }
 }
