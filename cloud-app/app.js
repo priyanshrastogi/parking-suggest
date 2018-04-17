@@ -31,7 +31,7 @@ mongoose.connect(config.mongoUri)
 .catch(err => console.log(err))
 
 app.use(passport.initialize());
-
+app.use(express.json());
 /*
 Enable Cross Origin Resource Sharing on Server
 */

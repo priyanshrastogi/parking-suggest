@@ -15,6 +15,7 @@ parkingRouter.route('/')
 
 parkingRouter.route('/add')
 .post((req, res, next) => {
+    console.log(req.body);
     Parking.create(req.body)
     .then(parking => {
         res.send(parking);
