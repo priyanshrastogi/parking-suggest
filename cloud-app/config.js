@@ -3,5 +3,5 @@ module.exports = {
     clientSecret: "6SkRFapGEoztpKwnBHIK8hvL",
     mongoUri: "mongodb://admin:parksmart100@ds237379.mlab.com:37379/parking-smart",
     secretKey: '14aerfss4dg896r4gvfdr4fd436vcb416',
-    rpiauthtokens: ['somerandomstringhere', 'somerandomstringhere2']
+    googleDistanceMatrixApiKey: 'AIzaSyCCIeV6n-Ujdjn3NBuuUKKyWkPIK0mFGeU',
 }

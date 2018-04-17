@@ -30,7 +30,7 @@ class Home extends Component {
                 <div style={{ height: '100vh', backgroundColor: '#3F51B5'}}>
                     <AppBar />
                     <h3 style={{ fontWeight: '300', marginTop: '100px', color: 'white' }} className="text-center">Parking your car has never been this easy!</h3>
-                    <a href="http://ec2-13-127-87-11.ap-south-1.compute.amazonaws.com/auth/google">
+                    <a href="https://parking-suggest-api.priyanshrastogi.com/auth/google">
                         <img src={`${GoogleSignInButton}`} style={{marginTop: '150px', display: 'block', marginLeft: 'auto', marginRight:'auto', height: '46px', width: '191px'}} />
                     </a>
                     <div className="text-center" style={{ marginTop: '50px' }}>

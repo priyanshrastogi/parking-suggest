@@ -14,9 +14,12 @@
   "author": "Priyansh Rastogi",
   "license": "MIT",
   "dependencies": {
+    "axios": "^0.18.0",
     "bluebird": "^3.5.1",
+    "cors": "^2.8.4",
     "express": "^4.16.3",
     "jsonwebtoken": "^8.2.1",
+    "lodash": "^4.17.5",
     "mongoose": "^5.0.13",
     "nodemon": "^1.17.3",
     "passport": "^0.4.0",

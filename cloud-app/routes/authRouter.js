@@ -1,6 +1,6 @@
 const express = require('express');
 const authRouter = express.Router();
-const auth = require('../authentication');
+const auth = require('../services/authentication');
 const passport = require('passport');
 
 authRouter.route('/google')
