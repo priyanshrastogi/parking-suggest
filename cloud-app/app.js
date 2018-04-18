@@ -60,7 +60,8 @@ const rpi = io.of('/rpi')
   .use((socket, next) => {
     Parking.findOne({rpiId: socket.handshake.query.id})
     .then(parking => {
-      if(parking.authtoken === socket.handshake.query.authtoken) {
+      console.log(parking);
+      if(parking.authToken === socket.handshake.query.authtoken) {
         parking.sessionId = socket.id;
         parking.save();
         socket.emit('parkingId', {parkingId: parking._id})
@@ -80,9 +81,9 @@ const rpi = io.of('/rpi')
     On disconnection with a socket, logging the disconnect time and reason in RPiLogs
     */
     socket.on('disconnect', (reason) => {
-      RPiLogs.find({sessionId: socket.id})
+      RPiLogs.findOne({sessionId: socket.id})
       .then(log => {
-        log.disconnectTime = Date.now();
+        log.disconnectedTime = Date.now();
         log.disconnectReason = reason;
         log.save();
       })
@@ -92,6 +93,7 @@ const rpi = io.of('/rpi')
     Storing data received from Raspberry Pi socket in ParkingLogs collection
     */
     socket.on('log', (payload) => {
+      console.log(payload);
       ParkingLogs.create(payload)
       .catch(err => console.log(err));
     })

@@ -1,7 +1,15 @@
 const io = require('socket.io-client');
-const token = "somerandomstringhere";
-const socket = io.connect(`http://10.13.41.14:5000/rpi?auth=${token}`);
+const authtoken = "randomauthtokenhere";
+const rpiId = "rpi2modelbinparking1"
+const socket = io.connect(`http://parking-suggest-api.priyanshrastogi.com/rpi?id=${rpiId}&authtoken=${authtoken}`);
+let parking = null;
 
-socket.on('connected', (data) => {
-    console.log(data);
-})
+socket.on('parkingId', (data) => {
+    parking = data.parkingId;
+    console.log(parking);    
+});
+
+setInterval(() => {
+    if(parking !== null)
+        socket.emit('log', { parking, freeSlots: 1 });
+}, 2000);

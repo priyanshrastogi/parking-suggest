@@ -4,7 +4,7 @@ export const SIGNIN_USER = 'signin_user';
 export const SIGNOUT_USER = 'signout_user';
 export const NEAREST_PARKING = 'nearest_parking';
 
-const CLOUD_API_URL = 'https://parking-suggest-api.priyanshrastogi.com'
+const CLOUD_API_URL = 'http://10.13.41.14';
 
 export function signinUser(userInfo, callback) {
     return function (dispatch) {

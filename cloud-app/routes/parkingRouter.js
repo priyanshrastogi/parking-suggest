@@ -15,7 +15,7 @@ parkingRouter.route('/')
 
 parkingRouter.route('/add')
 .post((req, res, next) => {
-    console.log(req.body);
+    //console.log(req.body);
     Parking.create(req.body)
     .then(parking => {
         res.send(parking);
@@ -27,11 +27,12 @@ parkingRouter.route('/findnearest')
 .get((req, res, next) => {
     googleDMApi.getDistanceToParkings(`${req.query.lat},${req.query.long}`)
     .then((distances) => {
-        distances.forEach(element => {
-            ParkingLogs.findOne({parking: element.parkingId})
+        for(let i=0; i<distances.length; i++) {
+            console.log(distances[i]);
+            ParkingLogs.findOne({parking: distances[i].parkingId})
             .then(log => {
                 if (log.freeSlots > 0) {
-                    Parking.findById(element.parkingId)
+                    Parking.findById(distances[i].parkingId)
                     .then(parking => {
                         return res.send({parking, freeSlots: log.freeSlots})
                     })
@@ -39,7 +40,7 @@ parkingRouter.route('/findnearest')
                 }
             })
             .catch(err => { return next(err) });
-        });
+        }
     })
     .catch((err) => { return next(err) });
 });
