@@ -12,15 +12,24 @@ var calculateDistance = () => {
     var startTick;
 
   echo.on('alert', function (level, tick) {
-    var endTick,
-      diff;
+    var endTick, diff, distance;
 
     if (level == 1) {
       startTick = tick;
     } else {
       endTick = tick;
       diff = (endTick >> 0) - (startTick >> 0); // Unsigned 32 bit arithmetic
-      console.log((diff / 2 / MICROSECDONDS_PER_CM).toFixed(2));
+      distance = (diff / 2 / MICROSECDONDS_PER_CM).toFixed(2);
+      console.log(distance);
+      if(distance < 20 && distance > 2) {
+
+      }
+      else if(distance >= 20 && distance< 100) {
+
+      }
+      else {
+        
+      }
     }
   });
 }

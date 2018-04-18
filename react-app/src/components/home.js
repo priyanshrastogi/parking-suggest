@@ -7,10 +7,6 @@ import { findNearestParking } from '../actions';
 
 class Home extends Component {
 
-    handleFindButton() {
-        this.props.findNearestParking();
-    }
-
     render() {
 
         if(this.props.authenticated) {
@@ -19,7 +15,7 @@ class Home extends Component {
                     <AppBar />
                     <h3 style={{fontWeight: '300', marginTop: '100px'}} className="text-center">{`Welcome, ${localStorage.getItem('name')}`}</h3>
                     <div className="text-center" style={{marginTop: '50px'}}>
-                        <button type="button" className="btn btn-dark" onClick={this.handleFindButton.bind(this)}>Find Nearest Parking</button>
+                        <Link className="btn btn-dark" to="/nearestparking">Find Nearest Parking</Link>
                     </div>
                 </div>
             );
@@ -33,9 +29,6 @@ class Home extends Component {
                     <a href="https://parking-suggest-api.priyanshrastogi.com/auth/google">
                         <img src={`${GoogleSignInButton}`} style={{marginTop: '150px', display: 'block', marginLeft: 'auto', marginRight:'auto', height: '46px', width: '191px'}} />
                     </a>
-                    <div className="text-center" style={{ marginTop: '50px' }}>
-                        <button type="button" className="btn btn-dark" onClick={this.handleFindButton.bind(this)}>Find Nearest Parking</button>
-                    </div>
                 </div>
             );
         }

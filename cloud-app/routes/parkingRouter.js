@@ -23,20 +23,36 @@ parkingRouter.route('/add')
     .catch(err => { return next(err) })
 });
 
+
+/**
+ * Brain of the project
+ */
+
 parkingRouter.route('/findnearest')
 .get((req, res, next) => {
+    /**
+     * Get Parkings sorted as nearest distance first wrt user's current location.
+     */
     googleDMApi.getDistanceToParkings(`${req.query.lat},${req.query.long}`)
     .then((distances) => {
+        /**
+         * For Each parking in the array, check if a parking has free slots. If there are free slots in parking,
+         * return it to the user otherwise check next. If there are no free slots at all, return not found.
+         */
         for(let i=0; i<distances.length; i++) {
-            console.log(distances[i]);
-            ParkingLogs.findOne({parking: distances[i].parkingId})
+            ParkingLogs.find({parking: distances[i].parkingId}).limit(1).sort({$natural:-1})
             .then(log => {
-                if (log.freeSlots > 0) {
-                    Parking.findById(distances[i].parkingId)
+                if (log[0].freeSlots > 0) {
+                    Parking.findById(log[0].parking).select('name location')
                     .then(parking => {
-                        return res.send({parking, freeSlots: log.freeSlots})
+                        return res.send({status: "found", parking, freeSlots: log[0].freeSlots, distance: distances[i].distance})
                     })
                     .catch(err => {return next(err) });
+                }
+                else {
+                    if(i=== distances.length-1) {
+                        return res.send({status: "not found"});
+                    }
                 }
             })
             .catch(err => { return next(err) });
