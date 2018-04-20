@@ -39,24 +39,24 @@ parkingRouter.route('/findnearest')
          * For Each parking in the array, check if a parking has free slots. If there are free slots in parking,
          * return it to the user otherwise check next. If there are no free slots at all, return not found.
          */
-        for(let i=0; i<distances.length; i++) {
-            ParkingLogs.find({parking: distances[i].parkingId}).limit(1).sort({$natural:-1})
+        distances.forEach((element, idx, distances) => {
+            ParkingLogs.find({parking: element.parkingId}).limit(1).sort({$natural:-1})
             .then(log => {
                 if (log[0].freeSlots > 0) {
                     Parking.findById(log[0].parking).select('name location')
                     .then(parking => {
-                        return res.send({status: "found", parking, freeSlots: log[0].freeSlots, distance: distances[i].distance})
+                        return res.json({status: "found", parking, freeSlots: log[0].freeSlots, distance: element.distance});
                     })
                     .catch(err => {return next(err) });
                 }
                 else {
-                    if(i=== distances.length-1) {
+                    if(idx === distances.length-1) {
                         return res.send({status: "not found"});
                     }
                 }
             })
             .catch(err => { return next(err) });
-        }
+        })
     })
     .catch((err) => { return next(err) });
 });
