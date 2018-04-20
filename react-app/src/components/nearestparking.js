@@ -26,7 +26,7 @@ class NearestParking extends Component {
                                 <a href={`https://www.google.com/maps/dir/?api=1&origin=${currentlocation.lat},${currentlocation.long}&destination=${nearestparking.parking.location.lat},${nearestparking.parking.location.long}`} className="btn btn-dark" style={{marginTop: '25px'}}>Navigate ({`${(nearestparking.distance/1000).toFixed(1)} km`})</a>
                             </div>
                         :
-                            <h6>No Parking Space is Available.</h6>
+                            <h6 style={{ marginTop: '150px', color: 'grey' }}>No Parking Space is Available.</h6>
                         }
                     </div>
                 );

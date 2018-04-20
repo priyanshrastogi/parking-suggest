@@ -1,8 +1,8 @@
 const express = require('express');
 const parkingRouter = express.Router();
 const Parking = require('../models/parking');
-const ParkingLogs = require('../models/parkinglogs');
 const googleDMApi = require('../services/googledistancematrixapi');
+const util = require('../services/processarray');
 
 parkingRouter.route('/')
 .get((req, res, next) => {
@@ -39,7 +39,12 @@ parkingRouter.route('/findnearest')
          * For Each parking in the array, check if a parking has free slots. If there are free slots in parking,
          * return it to the user otherwise check next. If there are no free slots at all, return not found.
          */
-        distances.forEach((element, idx, distances) => {
+        util.getAvailableSlot(distances, 0)
+        .then((response) => {
+            return res.json(response);
+        })
+        .catch((err) => { return next(err) })
+        /*distances.forEach((element, idx, distances) => {
             ParkingLogs.find({parking: element.parkingId}).limit(1).sort({$natural:-1})
             .then(log => {
                 if (log[0].freeSlots > 0) {
@@ -56,7 +61,7 @@ parkingRouter.route('/findnearest')
                 }
             })
             .catch(err => { return next(err) });
-        })
+        })*/
     })
     .catch((err) => { return next(err) });
 });

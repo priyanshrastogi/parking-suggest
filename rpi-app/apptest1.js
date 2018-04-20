@@ -12,6 +12,6 @@ socket.on('parkingId', (data) => {
 
 setInterval(function () {
     if(parking !== null) {
-        socket.emit('log', { parking, freeSlots: 1 });
+        socket.emit('log', { parking, freeSlots: 0 });
     }
 }, 2000);
