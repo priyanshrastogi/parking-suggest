@@ -50,3 +50,5 @@ passport.use(
 exports.getJwtForUser = (user) => {
     return jwt.sign({ _id: user._id }, config.secretKey, { expiresIn: '30d' });
 }
+
+exports.requireAuth = passport.authenticate('jwt', { session: false });

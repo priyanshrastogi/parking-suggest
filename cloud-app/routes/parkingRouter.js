@@ -1,6 +1,8 @@
 const express = require('express');
 const parkingRouter = express.Router();
+const crypto = require('crypto');
 const Parking = require('../models/parking');
+const authentication = require('../services/authentication');
 const googleDMApi = require('../services/googledistancematrixapi');
 const util = require('../services/processarray');
 
@@ -15,12 +17,15 @@ parkingRouter.route('/')
 
 parkingRouter.route('/add')
 .post((req, res, next) => {
-    //console.log(req.body);
-    Parking.create(req.body)
-    .then(parking => {
-        res.send(parking);
+    crypto.randomBytes(8, (err, buffer) => {
+        if(err) return next(err);
+        req.body.authToken = buffer.toString('hex');
+        Parking.create(req.body)
+        .then(parking => {
+            res.send(parking);
+        })
+        .catch(err => { return next(err) })
     })
-    .catch(err => { return next(err) })
 });
 
 
@@ -29,7 +34,7 @@ parkingRouter.route('/add')
  */
 
 parkingRouter.route('/findnearest')
-.get((req, res, next) => {
+.get(authentication.requireAuth, (req, res, next) => {
     /**
      * Get Parkings sorted as nearest distance first wrt user's current location.
      */
@@ -39,29 +44,10 @@ parkingRouter.route('/findnearest')
          * For Each parking in the array, check if a parking has free slots. If there are free slots in parking,
          * return it to the user otherwise check next. If there are no free slots at all, return not found.
          */
-        util.getAvailableSlot(distances, 0)
-        .then((response) => {
-            return res.json(response);
+        util.getAvailableSlots(distances, 0, (err, response) => {
+            if (err) return next(err);
+            res.json(response);
         })
-        .catch((err) => { return next(err) })
-        /*distances.forEach((element, idx, distances) => {
-            ParkingLogs.find({parking: element.parkingId}).limit(1).sort({$natural:-1})
-            .then(log => {
-                if (log[0].freeSlots > 0) {
-                    Parking.findById(log[0].parking).select('name location')
-                    .then(parking => {
-                        return res.json({status: "found", parking, freeSlots: log[0].freeSlots, distance: element.distance});
-                    })
-                    .catch(err => {return next(err) });
-                }
-                else {
-                    if(idx === distances.length-1) {
-                        return res.send({status: "not found"});
-                    }
-                }
-            })
-            .catch(err => { return next(err) });
-        })*/
     })
     .catch((err) => { return next(err) });
 });
