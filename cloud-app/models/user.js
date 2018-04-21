@@ -6,6 +6,7 @@ const UserSchema = new Schema({
     name: String,
     email: String,
     phone: String,
+    rfidTag: String
 }, { timestamps: true });
 
 const User = mongoose.model('User', UserSchema);

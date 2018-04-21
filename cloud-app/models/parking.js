@@ -8,6 +8,7 @@ const ParkingSchema = new Schema({
         long: {type: Number}
     },
     capacity: Number,
+    perHourPrice: Number,
     authToken: String,
     rpiId: String,
     sessionId: String    

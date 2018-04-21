@@ -7,11 +7,11 @@ let parking = null;
 
 socket.on('parkingId', (data) => {
     parking = data.parkingId;
-    console.log(parking);    
+    console.log(parking);
+    setInterval(function () {
+        if(parking !== null) {
+            console.log("emitted");
+            socket.emit('rfid', { parking, rfidTag: "rfidTokenForPriyanshRastogi" });
+        }
+    }, 30000);    
 });
-
-setInterval(function () {
-    if(parking !== null) {
-        socket.emit('log', { parking, freeSlots: 2 });
-    }
-}, 2000);

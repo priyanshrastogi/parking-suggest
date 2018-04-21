@@ -22,6 +22,9 @@ const parkingRouter = require('./routes/parkingRouter');
 const Parking = require('./models/parking');
 const RPiLogs = require('./models/rpilogs');
 const ParkingLogs = require('./models/parkinglogs');
+const User = require('./models/user');
+const UserParking = require('./models/userparkings');
+const mailer = require('./services/mailer');
 
 /*
 Connect to MongoDB on Mlab
@@ -97,4 +100,35 @@ const rpi = io.of('/rpi')
       ParkingLogs.create(payload)
       .catch(err => console.log(err));
     })
-  })
+
+    socket.on('rfid', (payload) => {
+      console.log(payload);
+      User.findOne({rfidTag: payload.rfidTag})
+      .then((user) => {
+        UserParking.findOne({user: user._id, parking: payload.parking, status: 'parked'}).populate('parking','name perHourPrice')
+        .then((userparking) => {
+          if(userparking !== null) {
+            userparking.outTime = Date.now();
+            userparking.bill = ((userparking.outTime-userparking.inTime)/(3600*1000)*userparking.parking.perHourPrice).toFixed(2);
+            userparking.status = 'done';
+            userparking.save()
+            .then((userparking => {
+              mailer.sendParkingOutMail(user.email, user.name, userparking.parking.name, userparking.inTime, userparking.outTime, userparking.bill);
+            }))
+            .catch(err => {console.log(err)});
+          }
+          else {
+            UserParking.create({user: user._id, parking: payload.parking})
+            .then((userparking) => {
+              Parking.findById(payload.parking).select('name')
+              .then((parking) => {
+                mailer.sendParkingInMail(user.email, user.name, parking.name, userparking.inTime);
+              })
+            })
+            .catch(err => console.log(err));
+          }
+        })
+      })
+      .catch(err => console.log(err));
+    })
+  });

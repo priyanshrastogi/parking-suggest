@@ -34,7 +34,7 @@ parkingRouter.route('/add')
  */
 
 parkingRouter.route('/findnearest')
-.get(authentication.requireAuth, (req, res, next) => {
+.get((req, res, next) => {
     /**
      * Get Parkings sorted as nearest distance first wrt user's current location.
      */

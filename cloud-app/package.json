@@ -21,6 +21,7 @@
     "jsonwebtoken": "^8.2.1",
     "lodash": "^4.17.5",
     "mongoose": "^5.0.13",
+    "nodemailer": "^4.6.4",
     "nodemon": "^1.17.3",
     "passport": "^0.4.0",
     "passport-google-oauth20": "^1.0.0",
