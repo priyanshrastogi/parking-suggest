@@ -4,10 +4,6 @@
 
 const io = require('socket.io-client');
 const Gpio = require('pigpio').Gpio;
-const SerialPort = require('serialport');
-const Readline = SerialPort.parsers.Readline;
-const port = new SerialPort('/dev/ttyACM0');
-const parser = port.pipe(new Readline({ delimiter: '\r\n' }));
 
 /**
  * Authentication Constants
@@ -88,12 +84,17 @@ setInterval(function () {
         console.log(status1+status2);
         socket.emit('log',{parking, freeSlots: status1+status2});
     }
-  }, 2000);
+  }, 5000);
 
 /**
  * As data is received from serial port, that is rfidTag value. Send it to cloud.
- */
+*/
+
+const SerialPort = require('serialport');
+const Readline = SerialPort.parsers.Readline;
+const port = new SerialPort('/dev/ttyACM0');
+const parser = port.pipe(new Readline({ delimiter: '\r\n' }));
 parser.on('data', (rfidTag) => { //Read data
     console.log(rfidTag);
-    socket.emit('rfid', { parking, rfidTag });
+    //socket.emit('rfid', { parking, rfidTag });
 });
