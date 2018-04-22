@@ -109,7 +109,8 @@ const rpi = io.of('/rpi')
         .then((userparking) => {
           if(userparking !== null) {
             userparking.outTime = Date.now();
-            userparking.bill = ((userparking.outTime-userparking.inTime)/(3600*1000)*userparking.parking.perHourPrice).toFixed(2);
+            const delta = userparking.outTime.valueOf()-userparking.inTime.valueOf();
+            userparking.bill = (delta/(3600*1000)*userparking.parking.perHourPrice).toFixed(2);
             userparking.status = 'done';
             userparking.save()
             .then((userparking => {

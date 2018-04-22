@@ -31,7 +31,7 @@ exports.sendParkingInMail = function(to, name, parking, inTime) {
         from: '"Parking Suggest" <parking.suggest@gmail.com>', // sender address
         to: to, // list of receivers
         subject: `Parking In Alert: ${parking}`, // Subject line
-        text: `Hey ${name.split(' ')[0]},\n\nYou have parked your car at ${parking} at ${inTime}`,
+        text: `Hey ${name.split(' ')[0]},\n\nYou have parked your car in ${parking} at ${inTime}`,
     };
 
     transporter.sendMail(mailOptions, function (err, info) {
@@ -43,12 +43,12 @@ exports.sendParkingInMail = function(to, name, parking, inTime) {
 };
 
 
-exports.sendParkingOutMail = function(to, name, parking, inTime, outTime, price) {
+exports.sendParkingOutMail = function(to, name, parking, inTime, outTime, bill) {
     const mailOptions = {
         from: '"Parking Suggest" <parking.suggest@gmail.com>', // sender address
         to: to, // list of receivers
-        subject: `Parking Out Alert: ${parking}`, // Subject line
-        text: `Hey ${name.split(' ')[0]},\n\nYou have parked your car at ${parking} at ${inTime}`,
+        subject: `Invoice: Your Parking at ${parking}`, // Subject line
+        text: `Hey ${name.split(' ')[0]},\n\nThank You for using Parking Suggest. Here is your Parking Invoice:\n\nParking: ${parking}\nIn Time: ${inTime}\nOut Time:${outTime}\nBilled Amount: INR ${bill}`,
     };
 
     transporter.sendMail(mailOptions, function (err, info) {
